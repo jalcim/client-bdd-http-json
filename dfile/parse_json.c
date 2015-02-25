@@ -1,0 +1,165 @@
+#include "object_sig_json.h"
+
+void prepreparse(char *file, int fd, int pid)
+{
+  int cpt = -1;
+  int cpt1 = 0;
+  int bol = 0;
+  char *a;
+
+  ft_putendl_fd("prepreparse", 2);
+  while (file[++cpt])
+    {
+      if (file[cpt] == '{')
+	{
+	  a = &file[cpt];
+	  cpt1++;
+	  bol = 1;
+	}
+      else if (file[cpt] == '}' && a)
+	{
+	  cpt1--;
+	  write(fd, a, (&file[cpt] - a) + 1);
+	  write(fd, "\n", 1);
+	  a = NULL;
+	}
+    }
+  ft_putendl_fd("prepreparse end : sig send", 2);
+  kill(pid, SIGUSR1);
+  exit (-1);
+}
+
+void preparse(int fd, int fd2, int pid)
+{
+  char *file;
+  char *ptr1;
+  char *ptr2;
+
+  ft_putendl_fd("preparse", 2);
+    ft_putendl_fd("NO DATA IN PARSE", 2);
+  pause();
+  ft_putendl_fd("preparse : sig recept", 2);
+    while (size_fd(fd))
+    {
+      //      ft_putendl_fd("preparse ", 2);
+      file = ft_read_chain(fd, '\n');
+      ptr1 = ft_croch(file, '{');
+      while ((ptr2 = ft_croch(ptr1, '"')))
+	{
+	  ft_putendl_fd(ptr2, fd2);
+        ft_putendl_fd(ptr2, 2);
+	  //	  ft_putendl_fd(ptr2, 2);
+	}
+      write(fd2, "\0", 1);//
+    }
+  if (kill(pid, SIGUSR1))
+    error("error -> no signal");
+  ft_printf("pid send sig = %d\n\n", pid);
+  ft_putendl_fd("preparse : sig send", 2);
+  dup2(1, 2);
+  exit(-1);
+}
+
+t_json *parse(int fd)//, int cmd)
+{
+  t_json *json;
+  t_json *first = NULL;
+  t_json *s = NULL;
+  t_json *save;
+  int bol;
+  char *str;
+  int size;
+
+  ft_putendl_fd("parse", 2);
+  s = first = json = (t_json *)malloc(sizeof(t_json));
+  dup2(1, 2);
+  ft_printf("my_pid = %d\n", getpid());
+  usleep(500000);// if cmd /*/!\/!\/!\/!\/!\/!\*/
+  //pause();
+  ft_putendl_fd("parse sig recept", 2);
+  while ((size = size_fd(fd)))
+    {
+        ft_putendl_fd("parse1", 2);
+      bol = 0;
+      if (!(str = ft_read_chain(fd, '\n')))
+	str = ft_strnew("-1");
+        ft_putendl_fd("parse2", 2);
+      if (str[0] == '\0' )
+	{//
+	  free(str);
+	  free(json);
+	  str = NULL;
+	  json = save;
+	  json->next_var = NULL;
+	  json->next_chain = (t_json *)malloc(sizeof(t_json));
+	  json = json->next_chain;
+	  bol = 1;
+	}
+      else if (!(json->var = ft_read_chain(fd, '\n')))
+	{
+	  json->var = ft_strnew("-1");
+	  error("no data ?!\n\n\n\n\n");//return (first);
+	}
+        ft_putendl_fd("parse3", 2);
+      if (!bol)
+	{
+	  json->namevar = str;
+	  json->next_var = (t_json *)malloc(sizeof(t_json));
+	  save = json;
+	  json = json->next_var;
+	  json->next_chain = NULL;
+	}
+      else
+	  json->next_var = NULL;
+    }
+    ft_putendl_fd("parse4", 2);
+  free(json);
+  first = first->next_var;
+  ft_putendl_fd("parse end", 2);
+  return (first);
+}
+
+char *ft_croch(char *file, char v)
+{
+  static int cpt = 0;
+  char *traitment;
+  static char c = '\0';
+  int dec;
+  int d;
+  int bol;
+
+  if(v != c)
+    {
+      c = v;
+      cpt = 0;
+    }
+  if (c == '{')
+    d = '}';
+  else if (c == '[')
+    d = ']';
+  else
+    d = c;
+  bol = 0;
+  cpt -= 1;
+  while (file[++cpt])
+    {
+      dec++;
+      if (file[cpt] == d && bol)
+	{
+	  traitment[dec-1] = '\0';
+	  cpt++;
+	  if (dec == 1)
+	      return (" ");
+	  return (traitment);
+	}
+      else if (file[cpt] == c)
+	{
+	  traitment = ft_strnew(&file[cpt+1]);
+	  dec = 0;
+	  bol = 1;
+	}
+    }
+  if (bol)
+    free(traitment);
+  return (NULL);
+}

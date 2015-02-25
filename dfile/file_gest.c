@@ -1,0 +1,225 @@
+#include "object_sig_json.h"
+#include "file_gest.h"
+
+void error(char *strerr)
+{
+  perror(strerr);
+  exit(-1);
+}
+
+void ft_wait()
+{
+  ft_putendl_fd("wait", 2);
+  return ;
+}
+/*
+int main()
+{
+  t_json *json;
+  int pipefd[2];
+  char *str;
+
+  pipe(pipefd);
+  req_pipe_gest(pipefd, -1);
+
+  chdir("reg/");
+  write_all();
+  json = file_json();
+  sleep(5);
+  //  write_json(json, 2);
+
+
+  write_all_name();
+  add("test_file", "data test");
+  search_folder("test_file");
+  del("test_file");
+
+  while((str = ft_read_chain(pipefd[0], '\0')))
+    ft_putendl(str);
+}
+*/
+t_json *file_json()
+{
+  t_json *ret;
+  int pipefd;
+
+  pipefd = req_pipe_gest(NULL, 0);
+  ret = parse(pipefd);
+  return (ret);
+}
+
+void write_all_name()
+{
+  t_dirent *Rfille;
+  DIR *rep;
+  int pipefd;
+
+  pipefd = req_pipe_gest(NULL, 1);
+  rep = opendir(".");
+  while ((Rfille = readdir(rep)))
+    if (Rfille->d_name[0] != '.')
+      ft_putendl_fd(Rfille->d_name, pipefd);
+  write(pipefd, "\0", 1);
+}
+
+void write_all()
+{
+  t_dirent *Rfille;
+  DIR *rep;
+  int pipefd;
+  int fd;
+
+  pipefd = req_pipe_gest(NULL, 1);
+  rep = opendir(".");
+  while ((Rfille = readdir(rep)))
+    if (Rfille->d_name[0] != '.')
+      {
+	fd = open(Rfille->d_name, O_RDONLY, S_IRWXU);
+	ft_putstr_fd(ft_readfd(fd, size_fd(fd)), pipefd);
+	write(pipefd, "\0", 1);
+	close(fd);
+      }
+}
+
+void write_file_tab_id()
+{
+  int fd;
+
+  unlink("tab_id");
+  //  system("rm tab_id;ls");
+  fd = open("tab_id", O_CREAT | O_RDWR, S_IRWXU);
+  write_tab_id(fd);
+  close(fd);
+}
+
+void write_tab_id(int fd_out)
+{
+  t_dirent *Rfille;
+  DIR *rep;
+  int pipefd;
+  int fd;
+  char *str;
+
+  pipefd = req_pipe_gest(NULL, 1);
+  rep = opendir(".");
+  while ((Rfille = readdir(rep)))
+    if (Rfille->d_name[0] != '.')
+      {
+	if (!strcmp(Rfille->d_name, "tab_id"))
+	  continue ;
+	fd = open(Rfille->d_name, O_RDONLY, S_IRWXU);
+	while(ft_strcmp((str = ft_read_chain(fd, '\n')), "Nom\n"))
+	  if (!str || !str[0])
+	    break;
+	ft_putendl_fd(Rfille->d_name, fd_out);
+	str = ft_read_chain(fd, '\n');
+	ft_putstr_fd(str, fd_out);
+	close(fd);
+      }
+  write(pipefd, "\0", 1);
+}
+
+t_json *all_id_folder()
+{
+  t_dirent *Rfille;
+  DIR *rep;
+  t_json *json = (t_json *)malloc(sizeof(t_json));
+  t_json *su = json;
+
+  rep = opendir(".");
+  while((Rfille = readdir(rep)))
+    {
+      if (Rfille->d_name[0] == '.')
+	continue ;
+      if (!(json->var = search_id_folder(Rfille->d_name)))
+	continue ;
+      json->namevar = ft_strnew(Rfille->d_name);
+      json->next_var = (t_json *)malloc(sizeof(t_json));
+      json = json->next_var;
+    }
+  closedir(rep);
+  return (su);
+}
+
+char *search_id_folder(char *namefile)
+{
+  char *str;
+  int fd;
+  int ret;
+
+  ft_putendl_fd(namefile, 2);
+  ft_putendl_fd("\n\n\n\n\n", 2);
+  pause();
+  if ((fd = open(namefile, O_RDONLY, S_IRWXU)) == -1)
+    {
+      ft_putendl_fd("dossier jme tire", 2);
+      return (NULL);
+    }
+  ft_printf("fd = %d\n", fd);
+  ret = 1;
+  while (ret)
+    {
+      if (!(str = ft_read_chain(fd, '\n')))
+	error("search_id_folder");
+      ret = ft_strcmp("Id_Patient\n", str);
+    }
+  str = ft_read_chain(fd, '\n');
+  close(fd);
+  return (str);
+}
+
+void add_file(char *namefile, char *file)
+{
+  int fd;
+  int pipefd;
+
+  fd = open(namefile, O_CREAT | O_RDWR, S_IRWXU);
+  write(fd, file, ft_strlen(file));
+  pipefd = req_pipe_gest(NULL, 1);
+  close(fd);
+}
+
+void del_file(char *namefile)
+{
+  int pipefd;
+
+  unlink(namefile);
+  pipefd = req_pipe_gest(NULL, 1);
+}
+
+void search_folder(char *namefile)
+{
+  t_dirent *Rfille;
+  DIR *rep;
+  int fd;
+  int pipefd;
+
+  pipefd = req_pipe_gest(NULL, 1);
+  rep = opendir(".");
+  while ((Rfille = readdir(rep)))
+    if (ft_strcmp(Rfille->d_name, namefile))
+      {
+	fd = open(namefile, O_RDONLY, S_IRUSR);
+	ft_putstr_fd(ft_readfd(fd, size_fd(fd)), pipefd);
+	write(pipefd, "\0", 1);
+	close(fd);
+	break;
+      }
+  closedir(rep);
+}
+
+int req_pipe_gest(int *pipefd, int in_out)
+{
+  static int *spipe = NULL;
+
+  if (pipefd)
+    spipe = pipefd;
+  else if (spipe) 
+    {
+      if (in_out)
+	return (spipe[1]);
+      else
+	return (spipe[0]);
+    }
+  return (-1);
+}
