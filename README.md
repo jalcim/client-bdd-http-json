@@ -26,3 +26,5 @@ les requettes serveur sont dans le fichier request_file
 les requettes serveur sont assembler dans config_request
 
 les requettes bdd sont implenter en dur dans bdd.c/request_bdd/!proto
+
+les sorties d'erreur de la bdd sont dans error_out
