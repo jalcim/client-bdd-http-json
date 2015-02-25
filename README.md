@@ -11,7 +11,7 @@ comme methode il y a : m_object_init, m_object_request_server(cmd), m_object_req
 
 les methodes sont sous forme de pointeur de fonction
 
-et des defines sont mit en place dans object.h
+et des defines sont mit en place dans object.h pour l'encapsulation
 
 les exemples d'utilisation sont dans object.c
 
