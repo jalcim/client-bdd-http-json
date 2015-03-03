@@ -8,7 +8,7 @@ les methodes sont initialiser dans m_object_init
 (m_object_init lance aussi les processus de la bdd comme ceux du client)
 
 
-
+______________________________________________________________________________________________________
 
 
 comme methode il y a :
@@ -35,7 +35,7 @@ des defines sont mit en place dans object.h pour l'encapsulation
 les exemples d'utilisation sont dans object.c
 
 
-
+____________________________________________________________________________________________
 
 
 pour une interaction avec le langage C utiliser ces fonctions :
@@ -46,6 +46,7 @@ write_json(t_json) : creer un fichier par element json (1 liste chaine == 1 fich
 le nom est l'ID
 
 
+_________________________________________________________________________________________________
 
 
 pour une interaction C -> objective-C  : (char *) -> (NSString *) utiliser :
@@ -54,7 +55,7 @@ pour une interaction C -> objective-C  : (char *) -> (NSString *) utiliser :
 NSString *String = [NSString stringWithCString:str encoding: NSUTF8StringEncoding];
 
 
-
+_________________________________________________________________________________________________________
 
 
 le multi client est theoriquement possible mais il faudrais organiser un dossier par client (pas le cas)
