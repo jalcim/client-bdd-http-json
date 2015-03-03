@@ -16,7 +16,7 @@ comme methode il y a :
 m_object_init : creation de l'objet ses processus et de ses methodes et de ses structures
 
 m_object_request_server(cmd) : requette au serveur suivant la cmd(numero de ligne dans le fichier request_file)
-cmd = 0 = login; cmd = 1 = logout; cmd = 2 = reception d'un fichier json;
+ .        cmd = 0 = login; cmd = 1 = logout; cmd = 2 = reception d'un fichier json;
 
 m_object_request_bdd_send(" ") : envoi du json a la bdd
 
