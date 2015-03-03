@@ -10,7 +10,7 @@
  Connection: keep-alive\n
  Content-type: application/x-www-form-urlencoded\r\n
  Content-Length: 23\r\n\r\n
- User=jeremy&Pass=123456");
+ User=user&Pass=pass");
  */
 
 /*
@@ -66,8 +66,8 @@ t_connectinfo *ft_initlog()
   infolog->ip = (char *)malloc(20);
   infolog->id = (char *)malloc(20);
   infolog->password = (char *)malloc(20);
-  strcpy(infolog->id, "User=jeremy");
-  strcpy(infolog->password, "Pass=123456");
+  strcpy(infolog->id, "User=user");
+  strcpy(infolog->password, "Pass=pass");
   ft_strcpy(infolog->ip, "10.10.33.101");//a lire et a convertir depuis infoApi
   infolog->data = (t_data_transfert *)malloc(sizeof(t_data_transfert));
   infolog->token = NULL;
