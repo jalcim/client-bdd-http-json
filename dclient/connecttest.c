@@ -61,16 +61,37 @@ void close_client(t_connectinfo *infolog)
 t_connectinfo *ft_initlog()
 {
   t_connectinfo *infolog;
+  int fd;
+  char *str;
 
   infolog = (t_connectinfo *)malloc(sizeof(t_connectinfo));
   infolog->ip = (char *)malloc(20);
   infolog->id = (char *)malloc(20);
   infolog->password = (char *)malloc(20);
-  strcpy(infolog->id, "User=user");
-  strcpy(infolog->password, "Pass=pass");
-  ft_strcpy(infolog->ip, "10.10.33.101");//a lire et a convertir depuis infoApi
+
+  chdir("..");
+  if ((fd = open("id", O_RDONLY, S_IRUSR)) < 0)
+    error("no file id");
+
+  str = ft_read_chain(fd, '\n');
+  str[ft_strlen(str) - 1] = 0;
+  strcpy(infolog->id, str);
+  ft_printf(":%s:\n", str);
+
+  str = ft_read_chain(fd, '\n');
+  str[ft_strlen(str) - 1] = 0;
+  strcpy(infolog->password, str);//"Pass=123456");                              
+  ft_printf(":%s:\n", str);
+
+  str = ft_read_chain(fd, '\n');
+  str[ft_strlen(str) - 1] = 0;
+  ft_printf(":%s:\n", str);
+
+  ft_strcpy(infolog->ip, str);//a lire et a convertir depuis infoApi            
   infolog->data = (t_data_transfert *)malloc(sizeof(t_data_transfert));
   infolog->token = NULL;
+  close(fd);
+  chdir("reg");
   return (infolog);
 }
 
