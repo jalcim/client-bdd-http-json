@@ -74,17 +74,15 @@ t_json *parse(int fd)//, int cmd)
   s = first = json = (t_json *)malloc(sizeof(t_json));
   dup2(1, 2);
   ft_printf("my_pid = %d\n", getpid());
-  usleep(500000);// if cmd /*/!\/!\/!\/!\/!\/!\*/
-  //pause();
+  //  usleep(500000);// if cmd /*/!\/!\/!\/!\/!\/!\*/
+  pause();
   ft_putendl_fd("parse sig recept", 2);
   while ((size = size_fd(fd)))
     {
-        ft_putendl_fd("parse1", 2);
       bol = 0;
       if (!(str = ft_read_chain(fd, '\n')))
 	str = ft_strnew("-1");
-        ft_putendl_fd("parse2", 2);
-      if (str[0] == '\0' )
+       if (str[0] == '\0' )
 	{//
 	  free(str);
 	  free(json);
@@ -100,8 +98,7 @@ t_json *parse(int fd)//, int cmd)
 	  json->var = ft_strnew("-1");
 	  error("no data ?!\n\n\n\n\n");//return (first);
 	}
-        ft_putendl_fd("parse3", 2);
-      if (!bol)
+       if (!bol)
 	{
 	  json->namevar = str;
 	  json->next_var = (t_json *)malloc(sizeof(t_json));
@@ -112,7 +109,6 @@ t_json *parse(int fd)//, int cmd)
       else
 	  json->next_var = NULL;
     }
-    ft_putendl_fd("parse4", 2);
   free(json);
   first = first->next_var;
   ft_putendl_fd("parse end", 2);

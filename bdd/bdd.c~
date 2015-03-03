@@ -106,12 +106,15 @@ t_json *request_bdd(char *id, char *data, int cmd)
   ////////
   ft_putendl_fd("reply", 2);
   strerr = ft_read_chain(ft_read_req_pipe(0), '\0');
+    ft_putendl_fd("chat1", 2);
   if (!(ft_strcmp(strerr, "error")))
     error(strerr);
   //
+    ft_putendl_fd("chat2", 2);
   strerr = ft_read_chain(ft_read_req_pipe(0), '\0');
   if (!(ft_strcmp(strerr, "bad request")))
     error(strerr);
+    ft_putendl_fd("chat3", 2);
   ////////
   if (cmd == 1 || cmd == 3)
     {
@@ -122,11 +125,12 @@ t_json *request_bdd(char *id, char *data, int cmd)
       else
       {
           usleep(500000);
-          kill(pipid, SIGUSR1);
+          //kill(pipid, SIGUSR1);
           ft_putnbr_fd(pipid, 2);
-          ft_putendl_fd(" signal de parse", 2);
+          ft_putendl_fd(" tout est ok", 2);
           exit(0);
       }
+        ft_putendl_fd("chat4", 2);
     }
   return (json);
 }
