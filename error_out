@@ -5,23 +5,13 @@ fork new request error_out
 end request error_out
 wait request error_out
 new request
-end new request
-getpid = 837
-end request error_out
-wait request error_out
-fork new request error_out
-end request error_out
-wait request error_out
-new request
 parse
-my_pid = 842
+my_pid = 977
 preparse
 NO DATA IN PARSE
 prepreparse
 prepreparse end : sig send
-getpid = 837
-getpid = 837
-getpid = 837
+getpid = 974
 preparse : sig recept
 NbDossier
 251
@@ -3279,12 +3269,10 @@ Popup_Remarque
 -
 ChronoDebug
 Temps pour recherche : 31 / Temps génération JSON : 172
-pid send sig = 843
+pid send sig = 978
 
 preparse : sig send
-getpid = 837
-getpid = 837
-getpid = 837
+getpid = 974
 parse sig recept
 parse end
 wr_js_2 en attente de signal
@@ -3457,9 +3445,7 @@ create file :2843718:
 write_elem_json
 path : 
 end new request
-getpid = 837
-getpid = 837
-getpid = 837
+getpid = 974
 end request error_out
 wait request error_out
 fork new request error_out
@@ -3469,11 +3455,9 @@ new request
 tab_id
 ????
 end new request
-getpid = 837
-getpid = 837
-getpid = 837
-getpid = 837
-getpid = 837
+getpid = 974
+getpid = 974
+getpid = 974
 end request error_out
 wait request error_out
 fork new request error_out
@@ -3481,13 +3465,11 @@ end request error_out
 wait request error_out
 new request
 end new request
-getpid = 837
-getpid = 837
-getpid = 837
-getpid = 837
-getpid = 837
-getpid = 837
-getpid = 837
+getpid = 974
+getpid = 974
+getpid = 974
+getpid = 974
+getpid = 974
 end request error_out
 wait request error_out
 fork new request error_out
@@ -3616,6 +3598,34 @@ POISSON
 Rother
 2844277
 Meier
+2844278
+Stierli
+2844279
+Krijgsman
+2844281
+KILIC
+2844284
+Büecheler
+33285
+BETTING
+39068
+AMATO
+945950
+WISZNIEWSKI
+994052
+ADAM DIOLEZ
+
+end new request
+getpid = 974
+getpid = 974
+getpid = 974
+getpid = 974
+getpid = 974
+getpid = 974
+getpid = 974
+end request error_out
+wait request error_out
+eier
 2844278
 Stierli
 2844279
