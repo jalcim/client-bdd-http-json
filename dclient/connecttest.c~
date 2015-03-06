@@ -1,4 +1,5 @@
 #include "connecttest.h"
+#include "../bdd/bdd.h"
 
 /*
  POST /REST/LOGIN HTTP/1.1\r\n
@@ -151,6 +152,8 @@ int ft_request(t_connectinfo *infolog, int cmd, char *id)
       request = alloc_base_request();
       init_base_request(request, proto);
     }
+  if (cmd == 2)
+    boool = 1;
   construct_request(id , request, cmd);
   ft_putendl_fd(request->request, infolog->sock);
   ft_receve_reply_request(infolog);

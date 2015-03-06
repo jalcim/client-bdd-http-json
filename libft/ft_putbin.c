@@ -41,7 +41,7 @@ unsigned int ft_bindec(char *bin)
     unsigned int compt = 0;
     int size;
 
-    size = strlen(bin);
+    size = ft_strlen(bin);
     while (bin[--size])
     {
         if (bin[size] == '1')

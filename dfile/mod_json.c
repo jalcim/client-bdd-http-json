@@ -1,4 +1,5 @@
 #include "object_sig_json.h"
+#include "../bdd/bdd.h"
 
 t_json *search_json(t_json *json, char *namevar,char *id)
 {
@@ -104,7 +105,7 @@ void write_elem_json(t_json *json, int fd)
     {
      if (!json->namevar)
 	break;
-     if (!json->namevar || !json->namevar[0])
+     if (!json->namevar[0])
 	error("no namevar");
       if (!json->var || !json->var[0])
 	error("no var");

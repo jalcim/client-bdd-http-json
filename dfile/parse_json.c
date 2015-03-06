@@ -5,7 +5,7 @@ void prepreparse(char *file, int fd, int pid)
   int cpt = -1;
   int cpt1 = 0;
   int bol = 0;
-  char *a;
+  char *a = NULL;
 
   ft_putendl_fd("prepreparse", 2);
   while (file[++cpt])
@@ -65,16 +65,17 @@ t_json *parse(int fd)//, int cmd)
   t_json *json;
   t_json *first = NULL;
   t_json *s = NULL;
-  t_json *save;
+  t_json *save = NULL;
   int bol;
   char *str;
   int size;
 
+  signal(SIGUSR1, ft_wait);
   ft_putendl_fd("parse", 2);
   s = first = json = (t_json *)malloc(sizeof(t_json));
   dup2(1, 2);
   ft_printf("my_pid = %d\n", getpid());
-  //  usleep(500000);// if cmd /*/!\/!\/!\/!\/!\/!\*/
+    //usleep(500000);// if cmd /*/!\/!\/!\/!\/!\/!\*/
   pause();
   ft_putendl_fd("parse sig recept", 2);
   while ((size = size_fd(fd)))
@@ -118,9 +119,9 @@ t_json *parse(int fd)//, int cmd)
 char *ft_croch(char *file, char v)
 {
   static int cpt = 0;
-  char *traitment;
+  char *traitment = NULL;
   static char c = '\0';
-  int dec;
+  int dec = 0;
   int d;
   int bol;
 
@@ -141,19 +142,19 @@ char *ft_croch(char *file, char v)
     {
       dec++;
       if (file[cpt] == d && bol)
-	{
+      {
 	  traitment[dec-1] = '\0';
 	  cpt++;
 	  if (dec == 1)
 	      return (" ");
 	  return (traitment);
-	}
+	  }
       else if (file[cpt] == c)
-	{
+	  {
 	  traitment = ft_strnew(&file[cpt+1]);
 	  dec = 0;
 	  bol = 1;
-	}
+	  }
     }
   if (bol)
     free(traitment);

@@ -1,11 +1,11 @@
 #include "object_sig_json.h"
 #include "file_gest.h"
-
+/*
 void error(char *strerr)
 {
   perror(strerr);
   exit(-1);
-}
+}*/
 
 void ft_wait()
 {

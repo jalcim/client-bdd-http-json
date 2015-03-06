@@ -58,51 +58,10 @@ t_json *search_json(t_json *json, char *namevar,char *id)
   ft_putendl_fd("end search_json", 2);
   return (save);//
 }
-/*
-void write_json_1(t_json *json)
-{
-  t_json *njson;
-  int fd;
-  int cpt;
 
-  if (!json)
-    error("no json");
-  cpt = -1;
-  while(++cpt < 2)//on passe les 2 champs
-    {
-      while (json->next_var)//on vas a la fin de la liste
-	json = json->next_var;
-      json = json->next_chain;//on change de liste
-    }
-  while (1)
-    {
-      njson = json;//nom pointe sur json
-      while(njson->next_var//on cherche l'id
-	    && ft_strcmp(njson->namevar, "Id_Patient\n"))
-	njson = njson->next_var;
-      if (!njson->next_var)//si on la pas trouver on sort de la boucle (2 fichier de fin)
-	break;
-      ft_putstr_fd("create file : ", 2);
-      ft_putendl_fd(njson->var, 2);
-      unlink(njson->var);//on detruit un eventuel fichier existant au paravant
-      fd = open(njson->var, O_CREAT | O_RDWR);//on cree le fichier
-      write_elem_json(json, fd);
-      close(fd);
-      while (json->next_var)
-	json = json->next_var;
-      if (!(json->next_chain))
-	break;
-      json = json->next_chain;
-      write(fd, "\0", 1);
-    }
-  ft_putendl_fd("end wr_js", 2);
-}
-*/
 void write_elem_json(t_json *json, int fd)
 {
   ft_putendl_fd("write_elem_json", 2);
-  if (!boool)
-    return ;
   while (1)
     {
      if (!json->namevar)

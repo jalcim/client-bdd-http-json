@@ -62,6 +62,16 @@ t_json *request_bdd(char *id, char *data, int cmd)
   t_json *json = NULL;
   //  t_json *sjson = NULL;
 
+  if (!boool)
+    {
+      json = malloc(sizeof(t_json));
+      json->namevar = ft_strnew("error");
+      json->var = ft_strnew("no bdd");
+      json->next_var = NULL;
+      json->next_chain = NULL;
+      json->path = NULL;
+      return (NULL);
+    }
   if (!(pipefd = ft_write_req_pipe(0)))
     error("req_write_pipe");
   if (!prototype)
@@ -106,15 +116,12 @@ t_json *request_bdd(char *id, char *data, int cmd)
   ////////
   ft_putendl_fd("reply", 2);
   strerr = ft_read_chain(ft_read_req_pipe(0), '\0');
-    ft_putendl_fd("chat1", 2);
   if (!(ft_strcmp(strerr, "error")))
     error(strerr);
   //
-    ft_putendl_fd("chat2", 2);
   strerr = ft_read_chain(ft_read_req_pipe(0), '\0');
   if (!(ft_strcmp(strerr, "bad request")))
     error(strerr);
-    ft_putendl_fd("chat3", 2);
   ////////
   if (cmd == 1 || cmd == 3)
     {
@@ -125,12 +132,11 @@ t_json *request_bdd(char *id, char *data, int cmd)
       else
       {
           usleep(500000);
-          //kill(pipid, SIGUSR1);
+          kill(pipid, SIGUSR1);
           ft_putnbr_fd(pipid, 2);
-          ft_putendl_fd(" tout est ok", 2);
+          ft_putendl_fd(" signal de parse", 2);
           exit(0);
       }
-        ft_putendl_fd("chat4", 2);
     }
   return (json);
 }
@@ -173,17 +179,17 @@ void ft_prepare()
     t_dirent *Rfille;
     DIR *rep;
  
-    chdir("Users/lysoft/chantier");
-    
+    chdir("Users/lysoft/client-bdd-http-json/");
+
     rep = opendir(".");
     while ((Rfille = readdir(rep)))
         if (Rfille->d_name[0] != '.')
             ft_putendl_fd(Rfille->d_name, 2);
     closedir(rep);
- 
-    
+
     ft_putendl_fd("creat", 2);
-    mkdir("reg", 0700);
+    if (mkdir("reg", 0700))
+      boool = 1;
     chdir("reg/");
 
     rep = opendir(".");
@@ -191,7 +197,6 @@ void ft_prepare()
         if (Rfille->d_name[0] != '.')
             ft_putendl_fd(Rfille->d_name, 2);
     closedir(rep);
-
 }
 
 void new_request()
@@ -204,6 +209,7 @@ void new_request()
   ft_putendl_fd("end new request", 2);
   exit(0);
 }
+
 /*
 int main()
 {
@@ -225,6 +231,7 @@ int main()
   ft_analyse_request("send");
 }
 */
+
 t_data *ft_analyse_request(char *request)
 {
   t_data *reply;

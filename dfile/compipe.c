@@ -23,5 +23,5 @@ int fd_save(int *pipefd, int in_out)
       else
 	return (spipe[0]);
     }
-  return (NULL);
+  return (0);
 }

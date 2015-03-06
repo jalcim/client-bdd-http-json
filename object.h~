@@ -19,7 +19,7 @@
 //2 eme generation
 #define m_request_bdd_verif_extract(object, id) object->json=request_bdd_verif_extract(object, id)
 #define m_request_bdd_verif_del(object, id) request_bdd_verif_del(object, id);
-#define m_request_bdd_verif_id(object) object->id=request_bdd_verif_id(object);
+#define m_request_bdd_verif_id(object, id) object->id=request_bdd_verif_id(object, id);)
 
 typedef struct s_object t_object;
 

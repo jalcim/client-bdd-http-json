@@ -169,15 +169,14 @@ void ft_prepare()
     t_dirent *Rfille;
     DIR *rep;
  
-    chdir("Users/lysoft/chantier");
-    
+    chdir("Users/lysoft/client-bdd-http-json/");
+
     rep = opendir(".");
     while ((Rfille = readdir(rep)))
         if (Rfille->d_name[0] != '.')
             ft_putendl_fd(Rfille->d_name, 2);
     closedir(rep);
- 
-    
+
     ft_putendl_fd("creat", 2);
     mkdir("reg", 0700);
     chdir("reg/");
@@ -187,7 +186,6 @@ void ft_prepare()
         if (Rfille->d_name[0] != '.')
             ft_putendl_fd(Rfille->d_name, 2);
     closedir(rep);
-
 }
 
 void new_request()
@@ -200,6 +198,7 @@ void new_request()
   ft_putendl_fd("end new request", 2);
   exit(0);
 }
+
 /*
 int main()
 {
@@ -221,6 +220,7 @@ int main()
   ft_analyse_request("send");
 }
 */
+
 t_data *ft_analyse_request(char *request)
 {
   t_data *reply;

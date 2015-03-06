@@ -7,25 +7,19 @@
 
 #define m_object_init object=init()
 #define m_object_request_server(cmd) (*object->request_server)(object->infolog, cmd, ft_ccatid(object->infolog->id, object->infolog->token))
+
 #define m_object_request_bdd_send(filename) (*object->request_bdd)(filename, object->infolog->data->reply, 0)
+
+//1 ere generation
 #define m_object_request_bdd_extract(filename) (*object->request_bdd)(filename, NULL, 1)
 #define m_object_request_bdd_id(filename) (*object->request_bdd)(filename, NULL, 3)
 #define m_object_request_bdd_del(filename) (*object->request_bdd)(filename, NULL, 2)
 #define m_object_destruct (*object->destruct)(object)
 
-typedef struct s_object t_object;
-
-struct s_object
-{
-  int (*request_server)(t_connectinfo *infolog, int cmd, char *id);//int ft_request(t_connectinfo *infolog, int cmd, char *id)
-  t_json *(*request_bdd)(char *filename, char *str, int cmd);//void request_bdd(char *id, char *data, int cmd)
-  void (*destruct)(t_object *object);
-
-  t_json *id;
-  t_json *json;
-  t_connectinfo *infolog;
-};
-
+//2 eme generation
+#define m_request_bdd_verif_extract(object, id) object->json=request_bdd_verif_extract(object, id)
+#define m_request_bdd_verif_del(object, id) request_bdd_verif_del(object, id);
+#define m_request_bdd_verif_id(object, id) object->id=request_bdd_verif_id(object_json *request_bdd_verif_del(t_object *object, char *id);
 void destruct(t_object *object);
 t_object *init();
 int object();
