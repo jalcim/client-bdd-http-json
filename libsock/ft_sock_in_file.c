@@ -14,6 +14,14 @@
 #include "ft_inet.h"
 #include <stdio.h>
 
+typedef struct s_char t_char;
+struct s_char
+{
+  char c;
+
+  t_char *next;
+};
+
 void inter_sd_dir(t_dirent **Rfille, DIR **rep, int socket, int nb, char *nb_file);
 void ft_send_dir(int socket, char *name_dir)
 {
@@ -140,43 +148,32 @@ int ft_recv_file(int socket, int nb)
   return (1);
 }
 
-char *ft_fd_in_str(int fd)
+char *ft_fd_in_str(int node_tree)
 {
-  char *tmp;
-  char *buffer;
-  int compt;
+  t_char *c;
+  t_char *tmp;
 
-  compt = 0;
-  tmp = (char *)malloc(2 * sizeof(char));
-  bzero(tmp, 2);
-  buffer = NULL;
-  read(fd, tmp, 1);
-  tmp[++compt] = '\0';
-  while (42)
+  int size;
+  char *str_tree;
+  int cpt;
+
+  size = 0;
+  tmp = c = (t_char *)malloc(sizeof(t_char));
+  while (++size && read(node_tree, &c->c, 1))
+      c = (c->next = (t_char *)malloc(sizeof(t_char *)));
+  c->next = NULL;
+  c = tmp;
+  str_tree = (char *)malloc(size * sizeof(char));
+  cpt = -1;
+  while (size-- && c->next)
     {
-      if (!buffer)
-	{
-	  buffer = (char *)malloc(compt+2 * sizeof(char));
-	  strcpy(buffer, tmp);
-	  free(tmp);
-	  tmp = NULL;
-	  read(fd, &buffer[compt], 1);
-	  if (!(buffer[compt]))
-	    return (buffer);
-	  buffer[++compt] = '\0';
-	}
-      else
-	{
-	  tmp = malloc(compt+2 * sizeof(char));
-	  strcpy(tmp, buffer);
-	  free(buffer);
-	  buffer = NULL;
-	  read(fd, &tmp[compt], 1);
-	  if (!(tmp[compt]))
-	    return (tmp);
-	  tmp[++compt] = '\0';
-	}
+      str_tree[++cpt] = c->c;
+      tmp = c;
+      c = c->next;
+      free(tmp);
     }
+  close(node_tree);
+  return (str_tree);
 }
 
 char *ft_recv_filename(int sock)
