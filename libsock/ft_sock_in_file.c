@@ -172,7 +172,6 @@ char *ft_fd_in_str(int node_tree)
       c = c->next;
       free(tmp);
     }
-  close(node_tree);
   return (str_tree);
 }
 
