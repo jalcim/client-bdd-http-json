@@ -159,7 +159,7 @@ char *ft_fd_in_str(int node_tree)
 
   size = 0;
   tmp = c = (t_char *)malloc(sizeof(t_char));
-  while (++size && read(node_tree, &c->c, 1))
+  while (++size && read(node_tree, &c->c, 1) && c->c)
       c = (c->next = (t_char *)malloc(sizeof(t_char *)));
   c->next = NULL;
   c = tmp;
